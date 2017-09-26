@@ -1,5 +1,6 @@
 var mainElement = document.querySelector('main');
 var menuElement = document.querySelector('.menu');
+var loader = document.createElement('div');
 var renderers = {};
 //
 function loadPeople(done) {
@@ -17,7 +18,8 @@ function loadPeople(done) {
 
 
 function renderGenerics(data, renderFunction, itemFunction){
-  console.info('rendering generics');
+  //console.info('rendering generics');
+  loader.classList.remove('loader');
   mainElement.innerHTML='';
   var createNav = document.createElement('nav');
   createButton('previous',data.previous, renderFunction,createNav);
@@ -207,10 +209,13 @@ function loadData(url, done){
   var xm2Http = new XMLHttpRequest();
   xm2Http.addEventListener('load',function(){
     var response =JSON.parse(xm2Http.responseText);
+    mainElement.classList.remove('loading');
     done(response);
   });
   xm2Http.open('get', url);
   xm2Http.send();
+  mainElement.classList.add('loading');
+  mainElement.appendChild(loader);
 }
 //
 function createButton(what, url, done, container){
